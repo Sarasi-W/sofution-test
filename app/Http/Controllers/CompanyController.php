@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Http\Requests\StoreCompany;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -14,7 +15,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('companies.index');
+        $companies = Company::orderBy('id', 'desc')->paginate(10);
+        
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -24,7 +27,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('companies.form');
     }
 
     /**
@@ -33,9 +36,22 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCompany $request)
     {
-        //
+        $data = $request->all();
+
+        if ($data['logo']) {
+            $logo = $this->storeImage($data['logo']);
+        }
+
+        $company = Company::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'logo' => $logo,
+            'website' => $data['website'],
+        ]);
+
+        return redirect()->back()->with('success', 'The company is successfully created.');
     }
 
     /**
@@ -81,5 +97,15 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+    }
+
+    public function storeImage($image)
+    {
+        $destinationPath = 'images/company_logos';
+        $companyLogo = date('YmdHis') . "." . $image->getClientOriginalExtension();
+        $image->move($destinationPath, $companyLogo);
+        $input['image'] = "$companyLogo";
+
+        return $companyLogo;
     }
 }
