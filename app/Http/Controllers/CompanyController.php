@@ -63,7 +63,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return view('companies.edit', ['company' => $company]);
     }
 
     /**
@@ -86,7 +86,21 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompany $request, Company $company)
     {
-        //
+        $data = $request->all();
+
+        if (isset($data['logo'])) {
+            $logoToRemove = $company->logo;
+            $company->logo = $this->storeImage($data['logo']);
+            unlink('images/company_logos/'.$logoToRemove);
+        }
+
+        $company->name = $data['name'];
+        $company->email = $data['email'];
+        $company->website = $data['website'];
+
+        $company->save();
+
+        return redirect()->back()->with('success', 'The company is successfully updated.');
     }
 
     /**
@@ -108,5 +122,15 @@ class CompanyController extends Controller
         $input['image'] = "$companyLogo";
 
         return $companyLogo;
+    }
+
+    public function search(Request $request)
+    {
+        $companies = Company::where('name', 'Like','%'.request()->get('q').'%')
+                            ->orWhere('email','Like','%'.request()->get('q').'%')
+                            ->orWhere('website','Like','%'.request()->get('q').'%')
+                            ->orderBy('id', 'desc')->paginate(10);
+
+        return view('companies.index', ['companies' => $companies]);
     }
 }
