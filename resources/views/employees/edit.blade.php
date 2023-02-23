@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Companies List</h1>
+                    <h1>Employees List</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -15,12 +15,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('companies.index') }}">
-                                    Companies
+                                <a href="{{ route('employees.index') }}">
+                                    Employees
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                {{ Route::currentRouteName() === 'companies.show' ? 'View' : 'Edit' }} 
+                                {{ Route::currentRouteName() === 'employees.show' ? 'View' : 'Edit' }} 
                             </li>
                         </ol>
                     </nav>
@@ -46,31 +46,63 @@
         <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">
-                    {{ Route::currentRouteName() === 'companies.show' ? 'View' : 'Edit' }}
-                    Company Details
+                    {{ Route::currentRouteName() === 'employees.show' ? 'View' : 'Edit' }}
+                    Employee Details
                 </h3>
               </div>
               <!-- form start -->
-              <form action="{{ route('companies.update', $company->id) }}" method="post" enctype="multipart/form-data">
+              <form action="{{ route('employees.update', $employee->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="name">Company Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{ $company->name }}">
+                        <label for="company">Company</label>
 
-                        @if($errors->first('name')) 
+                        @if (Route::currentRouteName() === 'employees.show')
+                            <input type="text" class="form-control" value="{{ $employee->company->name }}">
+                        @else
+                            <select class="custom-select" name="company">
+                                <option disabled>Choose employee's company</option>
+                                @foreach ($companies as $company)
+                                <option value="{{ $company->id }}" {{$company->id == $employee->company_id ? 'selected' : ''}}>{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                            
+                            @if($errors->first('company')) 
+                                <span class="error invalid-feedback d-block" role="alert">
+                                    <strong>{{ $errors->first('company') }}</strong>
+                                </span>
+                            @endif
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" value="{{ $employee->first_name }}">
+
+                        @if($errors->first('first_name')) 
                             <span class="error invalid-feedback d-block" role="alert">
-                                <strong>{{ $errors->first('name') }}</strong>
+                                <strong>{{ $errors->first('first_name') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter last name" value="{{ $employee->last_name }}">
+
+                        @if($errors->first('last_name')) 
+                            <span class="error invalid-feedback d-block" role="alert">
+                                <strong>{{ $errors->first('last_name') }}</strong>
                             </span>
                         @endif
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ $company->email }}">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ $employee->email }}">
 
                         @if($errors->first('email')) 
                             <span class="error invalid-feedback d-block" role="alert">
@@ -78,33 +110,14 @@
                             </span>
                         @endif
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="logo">Company Logo</label>
-                        <div class="my-2">
-                            <img src="{{ asset('/images/company_logos/'.$company->logo) }}" alt="{{$company->name}} Logo" style="height:75px">
-                        </div>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="logo" id="logoField" aria-describedby="inputGroupFileAddon04"  accept="image/png, image/gif, image/jpeg" value="{{ old('logo') }}">
-                                <label class="custom-file-label" for="logo" id="logoLabel">{{$company->logo}}</label>
-                            </div>
-                        </div>
-
-                        @if($errors->first('logo')) 
-                            <span class="error invalid-feedback d-block" role="alert">
-                                <strong>{{ $errors->first('logo') }}</strong>
-                            </span>
-                        @endif
-                    </div>
 
                     <div class="form-group">
-                        <label for="website">Company Website</label>
-                        <input type="text" class="form-control" id="website" name="website" placeholder="Enter website" value="{{ $company->website }}">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone number" value="{{ $employee->phone }}">
 
-                        @if($errors->first('website')) 
+                        @if($errors->first('phone')) 
                             <span class="error invalid-feedback d-block" role="alert">
-                                <strong>{{ $errors->first('website') }}</strong>
+                                <strong>{{ $errors->first('phone') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -112,13 +125,13 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    @if(Route::currentRouteName() === 'companies.edit')
+                    @if(Route::currentRouteName() === 'employees.edit')
                     <button type="submit" class="btn btn-success">Update</button>
                     <button type="reset" class="btn btn-info">Reset</button>
                     @else
-                    <a href={{ route('companies.edit', $company->id) }} type="button" class="btn btn-warning">Edit</a>
+                    <a href={{ route('employees.edit', $employee->id) }} type="button" class="btn btn-warning">Edit</a>
                     @endif
-                    <a type="button" href="{{ route('companies.index') }}" class="btn btn-secondary">Go Back</a>
+                    <a type="button" href="{{ route('employees.index') }}" class="btn btn-secondary">Go Back</a>
                 </div>
             </form>
         </div>

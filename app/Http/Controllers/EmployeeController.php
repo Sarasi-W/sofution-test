@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Http\Requests\StoreEmployee;
+use App\Http\Requests\UpdateEmployee;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,7 @@ class EmployeeController extends Controller
     public function create()
     {
         $companies = Company::orderBy('name', 'asc')->get();
+        
         return view('employees.form', ['companies' => $companies]);
     }
 
@@ -61,7 +63,9 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        $companies = Company::orderBy('name', 'asc')->get();
+        
+        return view('employees.edit', ['companies' => $companies, 'employee' => $employee]);
     }
 
     /**
@@ -72,7 +76,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        $companies = Company::orderBy('name', 'asc')->get();
+        
+        return view('employees.edit', ['companies' => $companies, 'employee' => $employee]);
     }
 
     /**
@@ -82,9 +88,19 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployee $request, Employee $employee)
     {
-        //
+        $data = $request->all();
+
+        $employee->first_name = $data['first_name'];
+        $employee->last_name = $data['last_name'];
+        $employee->phone = $data['phone'];
+        $employee->email = $data['email'];
+        $employee->company_id = $data['company'];
+
+        $employee->save();
+         
+        return redirect()->back()->with('success', 'The employee is successfully updated.');
     }
 
     /**
