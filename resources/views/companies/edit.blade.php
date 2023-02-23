@@ -20,7 +20,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Edit 
+                                {{ Route::currentRouteName() === 'companies.show' ? 'View' : 'Edit' }} 
                             </li>
                         </ol>
                     </nav>
@@ -45,7 +45,10 @@
 
         <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Edit Company Details</h3>
+                <h3 class="card-title">
+                    {{ Route::currentRouteName() === 'companies.show' ? 'View' : 'Edit' }}
+                    Company Details
+                </h3>
               </div>
               <!-- form start -->
               <form action="{{ route('companies.update', $company->id) }}" method="post" enctype="multipart/form-data">
@@ -109,12 +112,16 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-secondary">Reset</button>
-                  <a type="button" href="{{ route('companies.index') }}" class="btn btn-warning">Go Back</a>
+                    @if(Route::currentRouteName() === 'companies.edit')
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="reset" class="btn btn-info">Reset</button>
+                    @else
+                    <a href={{ route('companies.edit', $company->id) }} type="button" class="btn btn-warning">Edit</a>
+                    @endif
+                    <a type="button" href="{{ route('companies.index') }}" class="btn btn-secondary">Go Back</a>
                 </div>
-              </form>
-            </div>
+            </form>
+        </div>
     </div>
     
     <script>
