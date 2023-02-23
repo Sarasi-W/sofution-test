@@ -19,3 +19,4 @@ yarn-error.log
 /.vagrant
 composer.lock
 .editorconfig
+/public/images

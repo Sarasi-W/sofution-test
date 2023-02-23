@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Http\Requests\StoreCompany;
+use App\Http\Requests\UpdateCompany;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -73,7 +74,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        return view('companies.edit', ['company' => $company]);
     }
 
     /**
@@ -83,7 +84,7 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(UpdateCompany $request, Company $company)
     {
         //
     }

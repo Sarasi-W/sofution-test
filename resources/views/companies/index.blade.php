@@ -77,8 +77,8 @@
                                 <td>
                                     <a href={{ $company->website }} target="_blank">{{ $company->website }}</a></td>
                                 <td>
-                                    <a href="#" type="button" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a href="#" type="button" class="btn btn-warning"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
+                                    <a href="{{ route('companies.show', $company->id) }}" type="button" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    <a href="{{ route('companies.edit', $company->id) }}" type="button" class="btn btn-warning"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
                                     <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$company->id}})" data-target="#DeleteModal" class="btn btn-danger">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </a>
