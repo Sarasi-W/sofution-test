@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-// use Illuminate\Foundation\Http\FormRequest;
-// use App\Http\Requests\StoreCompany;
 use Illuminate\Support\Arr;
 
 class UpdateCompany extends StoreCompany
