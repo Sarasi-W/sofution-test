@@ -124,6 +124,11 @@ class CompanyController extends Controller
         return $companyLogo;
     }
 
+    /**
+     * Display a listing of the resource after filtering.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $companies = Company::where('name', 'Like','%'.request()->get('q').'%')

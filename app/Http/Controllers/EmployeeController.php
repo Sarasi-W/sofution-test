@@ -113,4 +113,23 @@ class EmployeeController extends Controller
     {
         //
     }
+
+    /**
+     * Display a listing of the resource after filtering.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $employees = Employee::where('first_name', 'Like','%'.request()->get('q').'%')
+                            ->orWhere('last_name', 'Like','%'.request()->get('q').'%')
+                            ->orWhere('email','Like','%'.request()->get('q').'%')
+                            ->orWhere('phone','Like','%'.request()->get('q').'%')
+                            ->orWhereHas('company', function($q) use ($request) {
+                                $q->where('name', 'Like',$request->get('q').'%');
+                            })
+                            ->orderBy('id', 'desc')->paginate(10);
+
+        return view('employees.index', ['employees' => $employees]);
+    }
 }
