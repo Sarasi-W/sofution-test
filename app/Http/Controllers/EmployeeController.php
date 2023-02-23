@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Http\Requests\StoreEmployee;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::orderBy('id', 'desc')->paginate(10);
+
+        return view('employees.index', ['employees' => $employees]);
     }
 
     /**
@@ -24,7 +28,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $companies = Company::orderBy('name', 'asc')->get();
+        return view('employees.form', ['companies' => $companies]);
     }
 
     /**
@@ -33,9 +38,19 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployee $request)
     {
-        //
+        $data = $request->all();
+
+        $employee = Employee::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'company_id' => $data['company'],
+        ]);
+
+        return redirect()->back()->with('success', 'The employee is successfully created.');
     }
 
     /**
