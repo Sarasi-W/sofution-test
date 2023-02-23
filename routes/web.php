@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,9 @@ Auth::routes(['register' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('companies/search', [CompanyController::class, 'search'])->name('companies.search');
     Route::resource('companies', CompanyController::class);
+
+    Route::get('employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+    Route::resource('employees', EmployeeController::class);
 });
