@@ -111,7 +111,12 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        foreach($company->employees as $employee) {
+            $employee->delete();
+        }
+        $company->delete();
+        
+        return redirect()->back()->with('success', 'The company is successfully deleted with their employees.');
     }
 
     public function storeImage($image)

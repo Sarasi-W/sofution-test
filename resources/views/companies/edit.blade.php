@@ -108,6 +108,21 @@
                             </span>
                         @endif
                     </div>
+
+                    <hr />
+                    <div class="form-group">
+                        <label for="website">Employees List</label>                        
+                        <ol>
+                            @foreach ($company->employees as $employee)
+                                <li>
+                                    <a class="text-decoration-none text-primary" href="{{ route('employees.show', $employee->id) }}">
+                                        {{ $employee->first_name }} {{ $employee->last_name }}
+                                    </a>
+                                    : <span class="text-secondary">{{ $employee->phone}} | {{ $employee->email}}</span>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
                 </div>
                 <!-- /.card-body -->
 
