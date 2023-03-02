@@ -25,7 +25,7 @@ class CompanyTest extends TestCase
         $response = $this->post('companies', [
             'name' => '',
             'email' => 'test@example.com',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example.com',
         ]);
 
@@ -42,7 +42,7 @@ class CompanyTest extends TestCase
         $response = $this->post('companies', [
             'name' => 'Sample Company Name',
             'email' => '',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example.com',
         ]);
 
@@ -59,14 +59,14 @@ class CompanyTest extends TestCase
         $this->post('companies', [
             'name' => 'Sample Company Name 1',
             'email' => 'test1@test.com',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example1.com',
         ]);
         
         $response = $this->post('companies', [
             'name' => 'Sample Company Name 2',
             'email' => 'test1@test.com',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example2.com',
         ]);
 
@@ -83,7 +83,7 @@ class CompanyTest extends TestCase
         $response = $this->post('companies', [
             'name' => 'Sample Company Name',
             'email' => 'test',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example.com',
         ]);
 
@@ -113,7 +113,7 @@ class CompanyTest extends TestCase
         $response = $this->post('companies', [
             'name' => 'Sample Company Name',
             'email' => 'test@test.co',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 10, 40),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 10, 40),
             'website' => 'http://example.com',
         ]);
 
@@ -184,7 +184,7 @@ class CompanyTest extends TestCase
         return $this->post('companies', [
             'name' => 'test company',
             'email' => 'test@example.com',
-            'logo' => $file = UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
+            'logo' => UploadedFile::fake()->image('AdminLTELogo.png', 100, 100),
             'website' => 'http://example.com',
         ]);
     }
